@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anum's Portfolio</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- AOS CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+    :root {
+      --olive: #556b2f;
+      --pastel-pink: #f4c2c2;
+      --dark-bg: #2e2e2e;
+      --text-dark: #222;
+      --text-light: #fff;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+      background-color: #fffafc;
+      color: var(--text-dark);
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: var(--olive) !important;
+    }
+
+    .navbar-brand {
+      font-weight: 600;
+      color: var(--pastel-pink) !important;
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--text-light) !important;
+      margin-left: 15px;
+      transition: 0.3s;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--pastel-pink) !important;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: linear-gradient(rgba(85,107,47,0.7), rgba(85,107,47,0.7)),
+        url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color: var(--text-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 600;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      color: var(--pastel-pink);
+    }
+
+    .btn-custom {
+      background-color: var(--pastel-pink);
+      color: #000;
+      border: none;
+      transition: 0.3s;
+    }
+
+    .btn-custom:hover {
+      background-color: #f09da0;
+      color: white;
+    }
+
+    .btn-outline-custom {
+      border: 1px solid var(--pastel-pink);
+      color: var(--pastel-pink);
+      transition: 0.3s;
+    }
+
+    .btn-outline-custom:hover {
+      background-color: var(--pastel-pink);
+      color: #000;
+    }
+
+    /* About Section */
+    #about {
+      background-color: #fff;
+    }
+
+    #about h2 {
+      color: var(--olive);
+    }
+
+    .skills-icons i {
+      font-size: 1.7rem;
+      margin-right: 10px;
+      color: var(--olive);
+    }
+
+    /* Projects Section */
+    #projects {
+      background-color: #fff5f8;
+    }
+
+    .card {
+      border: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .card-title {
+      color: var(--olive);
+    }
+
+    /* Contact Section */
+    #contact {
+      background-color: #fff;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--olive);
+      color: var(--pastel-pink);
+    }
+
+    footer i {
+      animation: heartbeat 1.2s infinite;
+      color: var(--pastel-pink);
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Anum<span class="text-light">.Dev</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero" class="hero">
+    <div class="container">
+      <h1 data-aos="fade-up">Hey, I’m <span style="color: var(--pastel-pink);">Anum</span> 👋</h1>
+      <p data-aos="fade-up" data-aos-delay="150">Creative Developer & Designer</p>
+      <button class="btn btn-custom m-1">Contact Me</button>
+      <button class="btn btn-outline-custom m-1">View Projects</button>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="py-5">
+    <div class="container" data-aos="fade-right">
+      <div class="row align-items-center text-center">
+        <div class="col-md-12">
+          <h2>About Me</h2>
+          <p class="mt-3">I’m Anum, a passionate developer who blends creativity and logic to build smooth, beautiful, and functional web experiences. With expertise in front-end development, I love bringing interfaces to life with clean design and thoughtful detail. 🌿</p>
+          <h5 class="mt-4">Skills</h5>
+          <p class="skills-icons mt-2">
+            <i class="fa-brands fa-html5"></i>
+            <i class="fa-brands fa-css3-alt"></i>
+            <i class="fa-brands fa-bootstrap"></i>
+            <i class="fa-brands fa-js"></i>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4" data-aos="fade-up">My Projects</h2>
+      <div class="row g-4">
+        
+        <div class="col-md-4" data-aos="zoom-in">
+          <div class="card shadow-sm">
+            <img src="https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Facebook Replica">
+            <div class="card-body">
+              <h5 class="card-title">Facebook Replica</h5>
+              <p class="card-text">A responsive Facebook homepage replica using pure HTML & CSS for design and structure precision.</p>
+              <a href="#" class="btn btn-outline-custom">View</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+          <div class="card shadow-sm">
+            <img src="https://images.unsplash.com/photo-1580894908361-967195033215?auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Periodic Table">
+            <div class="card-body">
+              <h5 class="card-title">Periodic Table</h5>
+              <p class="card-text">A colorful and creative HTML-based periodic table project — functional, educational, and aesthetic.</p>
+              <a href="#" class="btn btn-outline-custom">View</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
+          <div class="card shadow-sm">
+            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Motivational Journal">
+            <div class="card-body">
+              <h5 class="card-title">Motivational Journal</h5>
+              <p class="card-text">A motivational journaling web app with daily entries and personalized quotes saved via local storage.</p>
+              <a href="#" class="btn btn-outline-custom">View</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-5">
+    <div class="container" data-aos="fade-up">
+      <h2 class="text-center mb-4">Contact Me</h2>
+      <form class="row g-3">
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="Your Name">
+        </div>
+        <div class="col-md-6">
+          <input type="email" class="form-control" placeholder="Your Email">
+        </div>
+        <div class="col-12">
+          <textarea class="form-control" rows="4" placeholder="Your Message"></textarea>
+        </div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-custom">Send <i class="fa fa-paper-plane"></i></button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-3">
+    <p>&copy; 2025 Anum’s Portfolio | Made with <i class="fa fa-heart"></i></p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AOS JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+</body>
+</html>
