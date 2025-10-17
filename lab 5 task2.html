@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Chat App</title>
+  <style>
+    body {
+      background-color: #eef1f6;
+      font-family: Arial, Helvetica, sans-serif;
+      padding: 25px;
+    }
+
+    .wrapper {
+      width: 480px;
+      margin: auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1b263b;
+    }
+
+    .chat-window {
+      border: 1px solid #ccc;
+      height: 320px;
+      padding: 10px;
+      overflow-y: scroll;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .bubble {
+      display: inline-block;
+      margin: 6px 0;
+      padding: 10px 14px;
+      border-radius: 15px;
+      max-width: 75%;
+      word-wrap: break-word;
+    }
+
+    .me {
+      background-color: #cde8d3;
+      align-self: flex-end;
+      float: right;
+      text-align: right;
+    }
+
+    .bot {
+      background-color: #ffd6d6;
+      align-self: flex-start;
+      float: left;
+      text-align: left;
+    }
+
+    .input-section {
+      display: flex;
+      gap: 8px;
+    }
+
+    #msgInput {
+      flex-grow: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    #sendBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    #sendBtn:hover {
+      background-color: #005dc1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <h2>💬 Chat Room</h2>
+
+    <div class="chat-window" id="chatArea"></div>
+
+    <div class="input-section">
+      <input type="text" id="msgInput" placeholder="Enter your message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Constructor function for messages
+    function ChatMessage(content, sender) {
+      this.content = content;
+      this.sender = sender;
+    }
+
+    const chatLog = []; // Array to hold all messages
+
+    // Add event listener for button click
+    document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+    // Also send message when Enter key is pressed
+    document.getElementById("msgInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    // Function to handle sending a new message
+    function sendMessage() {
+      const inputField = document.getElementById("msgInput");
+      const messageText = inputField.value.trim();
+
+      try {
+        if (messageText === "") throw new Error("Message cannot be blank!");
+
+        const userMsg = new ChatMessage(messageText, "User");
+        chatLog.push(userMsg);
+        showMessage(userMsg);
+
+        inputField.value = "";
+
+        // Simulate bot reply with delay
+        setTimeout(() => {
+          const botResponse = new ChatMessage(generateBotReply(), "Bot");
+          chatLog.push(botResponse);
+          showMessage(botResponse);
+        }, 900);
+
+      } catch (err) {
+        alert("⚠️ " + err.message);
+      }
+    }
+
+    // Function to create and display message nodes
+    function showMessage(msgObj) {
+      const chatBox = document.getElementById("chatArea");
+      const messageDiv = document.createElement("div");
+
+      messageDiv.classList.add("bubble");
+      messageDiv.classList.add(msgObj.sender === "User" ? "me" : "bot");
+      messageDiv.textContent = msgObj.content;
+
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Function to create varied bot responses
+    function generateBotReply() {
+      const replies = [
+        "Hey there!",
+        "Got your message 👍",
+        "Interesting point!",
+        "Haha, true 😄",
+        "Tell me more..."
+      ];
+      const randomIndex = Math.floor(Math.random() * replies.length);
+      return replies[randomIndex];
+    }
+  </script>
+
+</body>
+</html>

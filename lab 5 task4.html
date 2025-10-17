@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Tracker</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f9fafb;
+      padding: 30px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto 20px auto;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #3498db;
+      color: white;
+      margin-right: 8px;
+    }
+
+    button:hover {
+      background: #2980b9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #3498db;
+      color: #fff;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .error {
+      border-color: red;
+      background-color: #ffeaea;
+    }
+
+    #total {
+      font-weight: bold;
+      margin-top: 15px;
+      text-align: right;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <h2>💰 Expense Tracker</h2>
+
+  <form id="expenseForm">
+    <input type="text" id="desc" placeholder="Enter Description">
+    <input type="number" id="amount" placeholder="Enter Amount">
+    <select id="category">
+      <option value="">-- Select Category --</option>
+      <option value="Food">Food</option>
+      <option value="Transport">Transport</option>
+      <option value="Shopping">Shopping</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <button type="submit">Add Expense</button>
+    <button type="button" id="resetBtn">Reset</button>
+  </form>
+
+  <div style="max-width:600px; margin:auto;">
+    <label for="filter">Filter by Category:</label>
+    <select id="filter">
+      <option value="All">All</option>
+      <option value="Food">Food</option>
+      <option value="Transport">Transport</option>
+      <option value="Shopping">Shopping</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <table id="expenseTable">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <p id="total">Total: $0</p>
+  </div>
+
+  <script>
+    // Expense Constructor
+    function Expense(desc, amount, category) {
+      this.desc = desc;
+      this.amount = amount;
+      this.category = category;
+    }
+
+    // Store expenses
+    const expenses = [];
+
+    // DOM Elements
+    const form = document.getElementById("expenseForm");
+    const tbody = document.querySelector("#expenseTable tbody");
+    const totalEl = document.getElementById("total");
+    const filter = document.getElementById("filter");
+
+    // Render all expenses
+    const renderExpenses = (data = expenses) => {
+      tbody.innerHTML = "";
+      let total = 0;
+      data.forEach((exp, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${exp.desc}</td>
+          <td>$${exp.amount}</td>
+          <td>${exp.category}</td>
+          <td><button onclick="deleteExpense(${index})">Delete</button></td>
+        `;
+        tbody.appendChild(row);
+        total += parseFloat(exp.amount);
+      });
+      totalEl.textContent = `Total: $${total.toFixed(2)}`;
+    };
+
+    // Delete function
+    window.deleteExpense = index => {
+      expenses.splice(index, 1);
+      renderExpenses();
+    };
+
+    // Form submission
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const desc = document.getElementById("desc");
+      const amount = document.getElementById("amount");
+      const category = document.getElementById("category");
+
+      [desc, amount, category].forEach(f => f.classList.remove("error"));
+
+      try {
+        if (!desc.value.trim()) throw "Description cannot be empty.";
+        if (!amount.value || isNaN(amount.value) || amount.value <= 0)
+          throw "Amount must be a valid number.";
+        if (!category.value) throw "Please select a category.";
+
+        const exp = new Expense(desc.value, parseFloat(amount.value), category.value);
+        expenses.push(exp);
+        renderExpenses();
+
+        form.reset();
+      } catch (err) {
+        alert("Error: " + err);
+        if (err.includes("Description")) desc.classList.add("error");
+        if (err.includes("Amount")) amount.classList.add("error");
+        if (err.includes("category")) category.classList.add("error");
+      }
+    });
+
+    // Filter by category
+    filter.addEventListener("change", () => {
+      const val = filter.value;
+      val === "All"
+        ? renderExpenses()
+        : renderExpenses(expenses.filter(e => e.category === val));
+    });
+
+    // Reset button
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      expenses.length = 0;
+      renderExpenses();
+      form.reset();
+      filter.value = "All";
+    });
+  </script>
+</body>
+</html>

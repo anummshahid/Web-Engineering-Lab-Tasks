@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Form Creator</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #eef2f6;
+      padding: 25px;
+      color: #222;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1b263b;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #0078d7;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 9px 14px;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #005ea6;
+    }
+
+    form {
+      max-width: 480px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .field-group {
+      margin-bottom: 15px;
+    }
+
+    .field-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .field-group input,
+    .field-group select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus {
+      border-color: #0078d7;
+    }
+
+    .error {
+      border: 1px solid red !important;
+      background-color: #ffe6e6;
+    }
+
+    .msg {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 15px;
+      color: green;
+    }
+
+    .msg.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧩 Smart Form Builder</h1>
+
+  <div class="buttons">
+    <button onclick="createField('text')">Add Text</button>
+    <button onclick="createField('email')">Add Email</button>
+    <button onclick="createField('dropdown')">Add Dropdown</button>
+  </div>
+
+  <form id="formBuilder">
+    <div class="msg" id="statusMsg"></div>
+    <button type="submit" style="margin-top:15px;">Submit</button>
+  </form>
+
+  <script>
+    var form = document.getElementById('formBuilder');
+    var messageBox = document.getElementById('statusMsg');
+
+    // Function to add different field types
+    function createField(type) {
+      var wrapper = document.createElement('div');
+      wrapper.className = 'field-group';
+
+      switch (type) {
+        case 'text':
+          wrapper.innerHTML = "<label>Enter Text:</label><input type='text' name='textField'>";
+          break;
+
+        case 'email':
+          wrapper.innerHTML = "<label>Email Address:</label><input type='email' name='emailField'>";
+          break;
+
+        case 'dropdown':
+          var selectHTML = "<label>Choose Option:</label>" +
+            "<select name='selectField'>" +
+            "<option value=''>-- Select One --</option>" +
+            "<option value='A'>Option A</option>" +
+            "<option value='B'>Option B</option>" +
+            "<option value='C'>Option C</option>" +
+            "</select>";
+          wrapper.innerHTML = selectHTML;
+          break;
+
+        default:
+          alert('Unknown field type!');
+      }
+
+      // Insert before the submit button
+      form.insertBefore(wrapper, form.lastElementChild);
+    }
+
+    // Validation on submit
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      var valid = true;
+      messageBox.textContent = '';
+      messageBox.classList.remove('error');
+
+      var inputs = form.querySelectorAll('input, select');
+
+      for (var i = 0; i < inputs.length; i++) {
+        var el = inputs[i];
+        el.classList.remove('error');
+
+        try {
+          switch (el.type) {
+            case 'text':
+              if (el.value.trim() === '') throw 'Text field is empty!';
+              break;
+
+            case 'email':
+              var pattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+              if (!pattern.test(el.value)) throw 'Invalid email address!';
+              break;
+
+            case 'select-one':
+              if (el.value === '') throw 'Please pick an option from dropdown.';
+              break;
+          }
+        } catch (err) {
+          el.classList.add('error');
+          messageBox.textContent = '⚠️ ' + err;
+          messageBox.classList.add('error');
+          valid = false;
+        }
+      }
+
+      if (valid && inputs.length > 0) {
+        messageBox.textContent = '✅ All fields validated successfully!';
+        form.reset();
+      } else if (inputs.length === 0) {
+        messageBox.textContent = '⚠️ No fields added!';
+        messageBox.classList.add('error');
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Shopping Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f4f8;
+      padding: 25px;
+      color: #222;
+    }
+
+    h1, h2 {
+      color: #1b263b;
+    }
+
+    .item-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    }
+
+    .item-box button {
+      background: #0066cc;
+      border: none;
+      color: #fff;
+      padding: 7px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .item-box button:hover {
+      background: #004c99;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #eef1f6;
+    }
+
+    .del-btn {
+      background-color: #d9534f;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .del-btn:hover {
+      background-color: #b52b27;
+    }
+
+    tfoot td {
+      font-weight: bold;
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛒 Mini Shopping Cart</h1>
+
+  <h2>Available Products</h2>
+  <div id="items-container"></div>
+
+  <h2>Your Cart</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="cart-content"></tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Total</td>
+        <td colspan="2" id="grand-total">Rs 0</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <script>
+    // Product catalog
+    const inventory = [
+      { title: "Sketchbook", cost: 200 },
+      { title: "Marker Set", cost: 120 },
+      { title: "Desk Lamp", cost: 950 },
+      { title: "Sticky Notes", cost: 80 }
+    ];
+
+    // Shopping cart array
+    const shoppingCart = [];
+
+    // Display all available products dynamically
+    const itemContainer = document.getElementById("items-container");
+
+    inventory.forEach((product) => {
+      const box = document.createElement("div");
+      box.classList.add("item-box");
+
+      box.innerHTML = `
+        <span>${product.title} — Rs ${product.cost}</span>
+        <button onclick="addItem('${product.title}', ${product.cost})">Add</button>
+      `;
+      itemContainer.appendChild(box);
+    });
+
+    // Function to add item to cart
+    function addItem(name, price) {
+      try {
+        if (!name || isNaN(price) || price <= 0) {
+          throw new Error("Invalid product details!");
+        }
+
+        const found = shoppingCart.find((item) => item.title === name);
+        if (found) {
+          found.quantity++;
+        } else {
+          shoppingCart.push({ title: name, cost: price, quantity: 1 });
+        }
+
+        updateCart();
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    }
+
+    // Function to remove item from cart
+    function deleteItem(index) {
+      shoppingCart.splice(index, 1);
+      updateCart();
+    }
+
+    // Function to update and render the cart table
+    function updateCart() {
+      const cartBody = document.getElementById("cart-content");
+      cartBody.innerHTML = "";
+
+      let total = 0;
+
+      // Loop through cart and create rows
+      for (let i = 0; i < shoppingCart.length; i++) {
+        const item = shoppingCart[i];
+        const subtotal = item.cost * item.quantity;
+        total += subtotal;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.title}</td>
+          <td>Rs ${item.cost}</td>
+          <td>${item.quantity}</td>
+          <td>Rs ${subtotal}</td>
+          <td><button class="del-btn" onclick="deleteItem(${i})">Remove</button></td>
+        `;
+        cartBody.appendChild(tr);
+      }
+
+      document.getElementById("grand-total").textContent = "Rs " + total;
+    }
+  </script>
+</body>
+</html>
